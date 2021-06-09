@@ -1,0 +1,24 @@
+<%= render 'index' %>
+<script type="text/javascript">
+  function add_text_box(){
+    inputs = $('.question_tag')
+    $.ajax({
+        type: 'POST',
+        dataType: 'JSON',
+        url: '/respond_user',
+        data: {question: $(inputs[inputs.length-1]).val()},
+        success: function(data) {
+           $(inputs[inputs.length-1]).prop("disabled", true)
+           $('.chatbot').append('<div class="d-flex flex-row p-3"><div class="bg-white mr-2 p-3"><span class="text-muted answer_tag"></span></div> <img src="https://img.icons8.com/color/48/000000/circled-user-male-skin-type-7.png" width="30" height="30">')
+           // $('.chatbot').append("<p class='answer_tag'></p>")
+           outputs = $('.answer_tag')
+           $(outputs[outputs.length-1]).text(data.answer)
+           $('.chatbot').append('<div class="d-flex flex-row p-3"> <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30" height="30"><div class="chat ml-2 p-3"><input type="text" name="question" id="question" value="" class="question_tag" onchange="add_text_box()"></div>')
+           // $('.chatbot').append('<input type="text" name="question" id="question" value="" class="question_tag" onchange="add_text_box()">')
+          },
+          error: function() {
+            console.log("Ajax request error");
+          },
+      });
+  }
+</script>
